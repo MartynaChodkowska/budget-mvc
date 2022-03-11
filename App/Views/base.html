@@ -42,7 +42,7 @@
 					<li class="navbar-item "><a class="nav-link" href="/" ><i class="icon-home"></i> Home</a></li>
 					{% if current_user %}
 						<li class="nav-item"><a class="nav-link" href="/profile/show">Profile</a></li>
-						<li class="nav-item"><a class="nav-link" href="/budget/show">My Budget</a></li>
+						<li class="nav-item"><a class="nav-link" href="/transaction/panel">My Budget</a></li>
 						<li class="nav-item"><a class="nav-link" href="/logout">Log out</a></li>
 					{% else %}
 						<li class="navbar-item"><a class="nav-link" href="/login"><i class="icon-login"></i> Sign in</a></li>	
@@ -55,18 +55,23 @@
 
 	<main>
 		<section class="west">
-			<div class="container">
-				{% block header %}
-				{% endblock %}
-				
-				{% for message in flash_messages %}
-					<div class="alert alert-{{ message.type }}">
-						{{ message.body }}
-					</div>
-				{% endfor %}
+			<div class="container mt-5">
+				<div class="row mx-auto">
+					{% block header %}
+					{% endblock %}
+					
+					{% for message in flash_messages %}
+						<div class="alert alert-{{ message.type }}">
+							{{ message.body }}
+						</div>
+					{% endfor %}
 
-				{% block body %}
-				{% endblock %}
+					{% block body %}
+					{% endblock %}
+					{% block aside %}
+					{% endblock %}
+					
+				</div>
 			</div>
 		</section>
 	</main>
