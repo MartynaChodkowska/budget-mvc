@@ -19,7 +19,7 @@ use \App\Models\User;
 	   */
 	  public function newAction()
 	  {
-		  View::renderTemplate('Signup/new.html');
+		  View::renderTemplate('signup/new.html');
 	  }
 	  
 	  
@@ -39,7 +39,7 @@ use \App\Models\User;
 				$this->redirect('/signup/success');
 		
 		   } else {
-			   View::renderTemplate('Signup/new.html', [
+			   View::renderTemplate('signup/new.html', [
 					'user' => $user
 				]);
 		   }

@@ -22,7 +22,14 @@ use \App\Flash;
 	  */
 	 public function newAction()
 	 {
-		 View::renderTemplate('Login/new.html');
+		if(isset($_POST['email'])) 
+		{
+			$this->redirect('/');
+		}
+		else 
+		{
+			View::renderTemplate('Login/new.html');
+		}
 	 }
 	 
 	 /**
@@ -42,7 +49,7 @@ use \App\Flash;
 						
 			Flash::addMessage('Login successful');
 			
-			$this->redirect(Auth::getReturnToPage());
+			$this->redirect('/transaction/panel');
 			
 		} else {
 			
