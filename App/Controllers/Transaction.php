@@ -20,12 +20,12 @@ use \App\Auth;
      *
      * @return void
      */
-        protected function before()
-        {
-            parent::before();
+	protected function before()
+    {
+    parent::before();
             
-            $this->user = Auth::getUser();
-        }
+		$this->user = Auth::getUser();
+    }
 		
     
     

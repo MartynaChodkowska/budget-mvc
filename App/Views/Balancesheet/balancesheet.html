@@ -1,0 +1,114 @@
+{% extends 'baseLogged.html' %}
+
+{% block title %}Current month balance sheet{% endblock %}
+
+{% block body %}
+
+    {% if user.errors is not empty %}
+    <p>Errors: </p>
+    <ul>
+        {% for error in user.errors %}
+            <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}	
+
+	<div class="buttons col-lg-8 bg-dark border border-secondary rounded-right">
+		<h4 class="mt-2"><strong> coś balance sheet</strong></h4>
+		<table class="table table-sm table-striped table-dark table-hover mt-3 mx-auto text-center">
+			<thead class="thead-dark">
+				<tr><th colspan="2" scope="col" class="p-2 text-success border-bottom">INCOMES</th></tr>
+				<tr><th scope="col">category</th><th scope="col">amount</th></tr>
+			</thead>
+			<tbody>
+				{% if incomes is empty %}
+					<tr>
+						<td colspan="2">there are no transactions</td>
+					</tr>
+				{% else %}
+					{% for income in incomes %}
+						<tr>
+							<td>{{ income.transactionGroup }}</td>
+							<td>{{ income.totalAmount }}</td>
+						</tr>
+					{% endfor %}
+					<tr>
+						<th>total</th>
+						<th>{{ totalIncomes }}</th>
+					</tr>
+				{% endif %}
+				
+			</tbody>
+		</table>
+		<hr>
+		<table class="table table-sm table-striped table-dark table-hover mt-3 mx-auto text-center">
+			<thead>
+				<tr><th colspan="2" scope="col" class="p-2 text-danger border-bottom">EXPENSES</th></tr>
+				<tr><th scope="col">category</th><th scope="col">amount</th></tr>
+			</thead>
+			<tbody>
+					{% if expenses is empty %}
+						<tr>
+							<td colspan="2">there are no transactions</td>
+						</tr>
+					{% else %}	
+						{% for expense in expenses %}
+							<tr>
+								<td>{{ expense.transactionGroup }}</td>
+								<td>{{ expense.totalAmount }}</td>
+							</tr>
+						{% endfor %}
+						<tr>
+							<th>total</th>
+							<th>{{ totalExpenses }}</th>
+						</tr>
+					{% endif %}
+			</tbody>
+		</table>
+		<hr>
+		<table class="table table-sm table-striped table-dark table-hover mt-3 mx-auto text-center">
+			<thead>
+				<tr><th scope="col" colspan="2" class="p-2 text-warning border-bottom">SUMMARY</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td scope="row">Incomes</td>
+					{% if totalIncomes matches '/^\\d+$/' %}
+						<td>{{ totalIncomes }}.00</td>
+					{% else %}
+						<td>{{ totalIncomes }}</td>
+					{% endif %}
+				</tr>
+				<tr>
+					<td scope="row">Expenses</td>
+					{% if totalExpenses matches '/^\\d+$/' %}
+						<td>{{ totalExpenses }}.00</td>
+					{% else %}
+						<td>{{ totalExpenses }}</td>
+					{% endif %}
+
+				</tr>
+				<tr>
+					<th scope="row">result</th>
+					{% if (totalIncomes - totalExpenses) matches '/^[-+]?[0-9]*\\.?[0-9]+$/' %}
+						<th>{{ totalIncomes - totalExpenses }}</th>
+					{% else %}
+						<th>{{ totalIncomes - totalExpenses }}.00</th>
+					{% endif %}
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<div class="p-3">
+			{% if (totalIncomes - totalExpenses) > 0 %}
+				<h1 style='color: ForestGreen; font-weight: 900;'>You are doing great job!</h1>
+			{% elseif (totalIncomes - totalExpenses) < 0 %}
+				<h1 style='color: FireBrick; font-weight: 900;'>Whoaa! Slow down with your expenses..</h1>
+			{% else %}
+				<h1 style='color: gold; font-weight: 900;'>well... could be worse, but still - try to make an effort to make some savings</h1>
+			{% endif %}
+		</div>
+		</br></br>
+	</div>
+	
+{% endblock %}
