@@ -7,6 +7,7 @@ use \App\Models\User;
 use \App\Models\Transactions;
 use \App\Auth;
 use \App\Date;
+use \App\Flash;
 
 /**
  * Balance sheet controler
@@ -32,19 +33,12 @@ use \App\Date;
     /**
      * set action to display appropriate balancesheet headline
      */
-    /*public static function setaction($actionToSet)
+    public static function setaction($actionToSet)
     {
         $action = $actionToSet;
         
-    }*/
+    }
 
-    /**
-     * get action to display appropriate balancesheet headline
-     */
-    /*public static function getaction()
-    {
-        return $action;
-    }*/
 
     /**
      * get current month data and pass it to getTransaction function to get rows from given period
@@ -56,9 +50,8 @@ use \App\Date;
         $start = Date::getfirstDayOfCurrentMonth();
         $end = Date::getLastDayOfCurrentMonth();
         
-       //$this->setAction('current month');
-        $this->getTransactions($start, $end);
-
+        $action = "running month";
+        $this->getTransactions($start, $end, $action);
     }
 
      /**
@@ -71,8 +64,8 @@ use \App\Date;
         $start = Date::getfirstDayOfPreviousMonth();
         $end = Date::getLastDayOfPreviousMonth();
 
-        $this->getTransactions($start, $end);
-
+        $action = "previous month";
+        $this->getTransactions($start, $end, $action);
     }
 
     /**
@@ -85,8 +78,8 @@ use \App\Date;
         $start = Date::getFirstDayOfCurrentYear();
         $end = Date::getLastDayOfCurrentYear();
 
-        $this->getTransactions($start, $end);
-
+        $action = "running year";
+        $this->getTransactions($start, $end, $action);
     }
 
     /**
@@ -96,12 +89,56 @@ use \App\Date;
      */
     public function previousyearAction()
     {
-        $_SESSION['title']="Previous year";
         $start = Date::getFirstDayOfPreviousYear();
         $end = Date::getLastDayOfPreviousYear();
 
-        $this->getTransactions($start, $end);
+        $action = "previous year";
+        $this->getTransactions($start, $end, $action);
+    }
 
+    /**
+     * show balance sheet panel
+     * 
+     * @return void
+     */
+    public function panelAction()
+    {
+        View::renderTemplate('Balancesheet/panel.html');
+    }
+
+    /**
+     * show balance sheet with fileds to select dates  
+     * 
+     * @return void
+     */
+    public function selectdatesAction()
+    {
+        View::renderTemplate('Balancesheet/selectdates.html');
+    }
+
+    /**
+     * get start and end date from user and pass it to getTransaction function to get rows from given period
+     * 
+     * @return void
+     */
+    public function customdatesAction()
+    {
+        $start = $_POST['startBalanceDate'];
+        $end = $_POST['endBalanceDate'];
+
+        if($start > $end)
+        {
+            Flash::addMessage('Wrong range of selected dates, please try again', Flash::WARNING);
+            View::renderTemplate('Balancesheet/selectdates.html', [
+                'start' => $start,
+                'end'    => $end
+            ]);
+        }
+        else
+        {
+            $action = $start . " to " . $end;
+            $this->getTransactions($start, $end, $action);
+        }
     }
 
     /**
@@ -111,7 +148,7 @@ use \App\Date;
      * 
      * @return void
      */
-    public function getTransactions($start, $end)
+    public function getTransactions($start, $end, $action)
     {
         $incomes = Transactions::getIncomes($start, $end);
         $totalIncomes = $this->getTotalIncomeAmount($incomes);
@@ -122,7 +159,8 @@ use \App\Date;
             'incomes' => $incomes,
             'totalIncomes' => $totalIncomes,
             'expenses' => $expenses,
-            'totalExpenses' => $totalExpenses
+            'totalExpenses' => $totalExpenses,
+            'action' => $action
         ]);
     }
 
@@ -157,4 +195,6 @@ use \App\Date;
         }
         return $totalExpenseAmount;
     }
+
+
  }
