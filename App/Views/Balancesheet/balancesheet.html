@@ -34,7 +34,11 @@
 					{% endfor %}
 					<tr>
 						<th>total</th>
-						<th>{{ totalIncomes }} PLN</th>
+						{% if totalIncomes matches '/^\\d+$/' %}
+						<th>{{ totalIncomes }}.00 PLN</th>
+						{% else %}
+							<th>{{ totalIncomes }} PLN</th>
+						{% endif %}
 					</tr>
 				{% endif %}
 				
@@ -60,7 +64,11 @@
 						{% endfor %}
 						<tr>
 							<th>total</th>
-							<th>{{ totalExpenses }} PLN</th>
+							{% if totalIncomes matches '/^\\d+$/' %}
+								<th>{{ totalExpenses }}.00 PLN</th>
+							{% else %}
+								<th>{{ totalExpenses }} PLN</th>
+							{% endif %}
 						</tr>
 					{% endif %}
 			</tbody>
@@ -95,10 +103,13 @@
 				</tr>
 				<tr>
 					<th scope="row">result</th>
-					{% if (totalIncomes - totalExpenses) matches '/^[-+]?[0-9]*\\.?[0-9]+$/' %}
-						<th>{{ totalIncomes - totalExpenses }} PLN</th>
+					{% set result = (totalIncomes - totalExpenses) %}
+					{% if result matches '/^\\d+$/' %}
+						<th>{{ result }}.00 PLN</th>
+					{% elseif result matches '/^-\\d+$/' %}
+						<th>{{ result }}.00 PLN</th>
 					{% else %}
-						<th>{{ totalIncomes - totalExpenses }}.00 PLN</th>
+						<th>{{ result }} PLN</th>
 					{% endif %}
 				</tr>
 				{% endif %}
@@ -108,7 +119,7 @@
 		<div class="p-3">
 			{% if incomes is empty and expenses is empty %}
 			{% else %}
-				{% if (totalIncomes - totalExpenses) > 0 %}
+				{% if result > 0 %}
 					<h1 style='color: ForestGreen; font-weight: 900;'>You are doing great job!</h1>
 				{% elseif (totalIncomes - totalExpenses) < 0 %}
 					<h1 style='color: FireBrick; font-weight: 900;'>Whoaa! Slow down with your expenses..</h1>
