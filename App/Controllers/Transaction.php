@@ -6,6 +6,8 @@ use \Core\View;
 use \App\Models\User;
 use \App\Models\Transactions;
 use \App\Auth;
+use \App\Flash;
+
 
 /**
  * Budget controller
@@ -59,6 +61,7 @@ use \App\Auth;
             View::renderTemplate('Transaction/addExpense.html');
         }
 
+        
         /**
          * Save new transaction
          * 
@@ -70,12 +73,38 @@ use \App\Auth;
 
             if ($transaction->save())
             {
-                $this->redirect('/');
+                Flash::addMessage('Transaction has been successfully added!', Flash::SUCCESS);
+                $this->lastTransactions();
             } else {
                 View::renderTemplate('Transaction/panel', [
                     'transaction' => $transaction
                 ]);
             }
         }
+
+        /**
+         * Show last transaction with given number of rows
+         * 
+         * @return void
+         */
+        public function lasttransactionsAction()
+        {
+            $this->lastTransactions();
+        }
+
+        /**
+         * Get logged user last transactions with given number of rows and pass it to the view
+         * 
+         * @return void
+         */
+        public function lastTransactions()
+        {   
+            $last_transactions = Transactions::getLastTransactions($_SESSION['user_id']);
+                    View::renderTemplate('/transaction/lasttransactions.html', [
+                    'last_transactions'  => $last_transactions
+                ]);
+
+        }
+
 
 }
