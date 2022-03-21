@@ -1,6 +1,6 @@
 {% extends 'baseLogged.html' %}
 
-{% block title %}Current month balance sheet{% endblock %}
+{% block title %}{{ action }} balance sheet{% endblock %}
 
 {% block body %}
 
@@ -13,8 +13,8 @@
     </ul>
     {% endif %}	
 
-	<div class="buttons col-lg-8 bg-dark border border-secondary rounded-right">
-		<h4 class="mt-2"><strong> coś balance sheet</strong></h4>
+	<div class="buttons col-lg-8 bg-dark border border-secondary rounded-right mb-3">
+		<h4 class="mt-2"><strong> {{ action }} balance sheet</strong></h4>
 		<table class="table table-sm table-striped table-dark table-hover mt-3 mx-auto text-center">
 			<thead class="thead-dark">
 				<tr><th colspan="2" scope="col" class="p-2 text-success border-bottom">INCOMES</th></tr>
@@ -29,12 +29,12 @@
 					{% for income in incomes %}
 						<tr>
 							<td>{{ income.transactionGroup }}</td>
-							<td>{{ income.totalAmount }}</td>
+							<td>{{ income.totalAmount }} PLN</td>
 						</tr>
 					{% endfor %}
 					<tr>
 						<th>total</th>
-						<th>{{ totalIncomes }}</th>
+						<th>{{ totalIncomes }} PLN</th>
 					</tr>
 				{% endif %}
 				
@@ -55,12 +55,12 @@
 						{% for expense in expenses %}
 							<tr>
 								<td>{{ expense.transactionGroup }}</td>
-								<td>{{ expense.totalAmount }}</td>
+								<td>{{ expense.totalAmount }} PLN</td>
 							</tr>
 						{% endfor %}
 						<tr>
 							<th>total</th>
-							<th>{{ totalExpenses }}</th>
+							<th>{{ totalExpenses }} PLN</th>
 						</tr>
 					{% endif %}
 			</tbody>
@@ -71,41 +71,50 @@
 				<tr><th scope="col" colspan="2" class="p-2 text-warning border-bottom">SUMMARY</th></tr>
 			</thead>
 			<tbody>
+				{% if incomes is empty and expenses is empty %}
+					<tr>
+						<td colspan="2">there are no transactions</td>
+					</tr>
+				{% else %}
 				<tr>
 					<td scope="row">Incomes</td>
 					{% if totalIncomes matches '/^\\d+$/' %}
-						<td>{{ totalIncomes }}.00</td>
+						<td>{{ totalIncomes }}.00 PLN</td>
 					{% else %}
-						<td>{{ totalIncomes }}</td>
+						<td>{{ totalIncomes }} PLN</td>
 					{% endif %}
 				</tr>
 				<tr>
 					<td scope="row">Expenses</td>
 					{% if totalExpenses matches '/^\\d+$/' %}
-						<td>{{ totalExpenses }}.00</td>
+						<td>{{ totalExpenses }}.00 PLN</td>
 					{% else %}
-						<td>{{ totalExpenses }}</td>
+						<td>{{ totalExpenses }} PLN</td>
 					{% endif %}
 
 				</tr>
 				<tr>
 					<th scope="row">result</th>
 					{% if (totalIncomes - totalExpenses) matches '/^[-+]?[0-9]*\\.?[0-9]+$/' %}
-						<th>{{ totalIncomes - totalExpenses }}</th>
+						<th>{{ totalIncomes - totalExpenses }} PLN</th>
 					{% else %}
-						<th>{{ totalIncomes - totalExpenses }}.00</th>
+						<th>{{ totalIncomes - totalExpenses }}.00 PLN</th>
 					{% endif %}
 				</tr>
+				{% endif %}
 			</tbody>
 		</table>
 		<hr>
 		<div class="p-3">
-			{% if (totalIncomes - totalExpenses) > 0 %}
-				<h1 style='color: ForestGreen; font-weight: 900;'>You are doing great job!</h1>
-			{% elseif (totalIncomes - totalExpenses) < 0 %}
-				<h1 style='color: FireBrick; font-weight: 900;'>Whoaa! Slow down with your expenses..</h1>
+			{% if incomes is empty and expenses is empty %}
 			{% else %}
-				<h1 style='color: gold; font-weight: 900;'>well... could be worse, but still - try to make an effort to make some savings</h1>
+				{% if (totalIncomes - totalExpenses) > 0 %}
+					<h1 style='color: ForestGreen; font-weight: 900;'>You are doing great job!</h1>
+				{% elseif (totalIncomes - totalExpenses) < 0 %}
+					<h1 style='color: FireBrick; font-weight: 900;'>Whoaa! Slow down with your expenses..</h1>
+				{% else %}
+					<h1 style='color: gold; font-weight: 900;'>well... could be worse, but still - try to make an effort to make some savings</h1>
+				{% endif %}
 			{% endif %}
 		</div>
 		</br></br>
