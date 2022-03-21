@@ -7,8 +7,8 @@
     src: local('Bankwesen Regular'), url('Bankwesen.woff') format('woff');    }
 		
 body{
-	background-color: #000000;
-	color: #FFF6E0;
+	background-color: #F5F5F5;
+	color: #2F4F4F;
 	font-family: 'Advent Pro', sans-serif;
 	font-weight: 400;
 	margin: 0;
@@ -19,17 +19,18 @@ body{
 .bg-piggy
 {
 	background-color: #2F4F4F !important;
+	color: #F5F5F5;
 }
 
 .navbar-item a
 {
-	color: #4b4b4b;
+	color: #F5F5F5;
 	text-decoration: none;
 }
 
 .navbar-item a:hover
 {
-	color: #000;
+	color: #F5F5F5;
 	text-decoration: none;
 }
 	
@@ -56,15 +57,14 @@ p
 	font-weight: 900;
 	font-size: 1.5rem;
 	max-width: 338.66px;
-	color: gray;
+	color: #2F4F4F;
 }
 
 .btn a
 {
-	color: #000;
+	color: #2F4F4F;
 	text-decoration: none;
 }
-
 
 .icon
 {
@@ -76,11 +76,12 @@ p
 input[type="text"],
 input[type="password"],
 input[type="date"],
+input[type="number"],
 input[type="email"]
 {
 	background-color: #D3D3D3;
 	opacity: 0.8;
-	color: 73A580;
+	color: #5F9EA0;
 	border: 2px solid #ddd;
 	border-radius: 5px;
 	padding: 7px;
@@ -91,20 +92,22 @@ input[type="email"]
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
+input[type="number"]:focus,
 input[type="email"]:focus
 {
 	-webkit-box-shadow: 3px 3px 5px 2px rgba(172,212,182,1);
 	-moz-box-shadow: 3px 3px 5px 2px rgba(172,212,182,1);
 	box-shadow: 3px 3px 5px 2px rgba(172,212,182,1);
-	border: 2px solid #3A6C47;
+	border: 2px solid #5F9EA0;
 }
 
 input[type="submit"]
 {
-	background-color: #3A6C47;
-	color: #F0BCED;
+	background-color: #2F4F4F;
+	color: #F5F5F5;
 	font-size: 20px;
 	font-weight: 700;
+	max-width: 140px;
 	padding: 7px;
 	margin-top: 20px;
 	border: none;
@@ -116,25 +119,26 @@ input[type="submit"]
 
 input[type="submit"]:focus
 {
-	-webkit-box-shadow: 3px 3px 3px 2px rgba(172,212,182,1);
-	-moz-box-shadow: 3px 3px 3px 2px rgba(172,212,182,1);
-	box-shadow: 3px 3px 3px 2px rgba(172,212,182,1);
+	-webkit-box-shadow: 3px 3px 3px 2px rgb(38, 136, 13);
+	-moz-box-shadow: 3px 3px 3px 2px rgba(38, 136, 13);
+	box-shadow: 3px 3px 3px 2px rgba(38, 136, 13);
 }
 
 input[type="submit"]:hover
 {
-	background-color: #69B57D;
+	background-color: #2a831e;
 }
 
 
 input[type="reset"]
 {
 	width: 300px;
-	margin-left: 50px;
-	background-color: #DAA520;
-	color: #2F4F4F;
+	background-color: #A52A2A;
+	color: #F5F5F5;
 	font-size: 20px;
-	padding: 7px 5px;
+	max-width: 140px;
+	font-weight: 700;
+	padding: 7px;
 	margin-top: 20px;
 	border: none;
 	border-radius: 5px;
@@ -146,14 +150,14 @@ input[type="reset"]
 
 input[type="reset"]:focus
 {
-	-webkit-box-shadow: 3px 3px 3px 2px rgba(238,133,72,1);
-	-moz-box-shadow: 3px 3px 3px 2px rgba(238,133,72,1);
-	box-shadow: 3px 3px 3px 2px rgba(238,133,72,1);
+	-webkit-box-shadow: 3px 3px 3px 2px rgb(226, 55, 55);
+	-moz-box-shadow: 3px 3px 3px 2px rgba(226, 55, 55);
+	box-shadow: 3px 3px 3px 2px rgba(226, 55, 55);
 }
 
 input[type="reset"]:hover
 {
-	background-color: #E27333;
+	background-color: #e23333;
 }
 	
 #comment
@@ -177,15 +181,9 @@ input[type="reset"]:hover
 	-webkit-box-shadow: 3px 3px 5px 2px rgba(75,75,75,1);
 	-moz-box-shadow: 3px 3px 5px 2px rgba(75,75,75,1);
 	box-shadow: 3px 3px 5px 2px rgba(75,75,75,1);
-	border: 2px solid #B8860B;
-	background-color: #DEB887;
+	border: 2px solid #F5F5F5;
+	background-color: #F5F5F5;
 	color: #2F4F4F;	
-}
-
-#notRequired
-{
-	font-size: 16px;
-	margin-top: 15px;
 }
 
 #selectMenu
@@ -200,38 +198,6 @@ input[type="reset"]:hover
 	outline: none;
 	margin-top: 10px;
 }
-
-
-#selectPeriod
-{	
-	background-color: #D3D3D3;
-	opacity: 0.8;
-	color: black;
-	border: 2px solid #ddd;
-	border-radius: 5px;
-	padding: 7px;
-	box-sizing: border-box;
-	outline: none;
-	margin-top: 10px;
-}
-
-#rowSelectDateInvisible
-{
-	width: 320px;
-	margin: 13px 0;
-	opacity: 0;
-	display: none;
-	transition: all .3s ease-in-out;
-}
-
-#rowSelectDateVisible
-{
-	margin: 13px 0;
-	opacity: 1;	
-	display: inline-block;
-	transition: all .3s ease-in-out;
-}
-
 .piechart 
 {
 	display: block;

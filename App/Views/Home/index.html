@@ -28,22 +28,16 @@
 				<p class="card-text">& make it the best possible way -
 					<span class="d-block">clear, plain & beautiful!</span>
 				</p>
+				{% if not current_user %}
+				<hr>
+				<p>
+					<a href="/login"><button type="button" class="btn-light">sign in</button></a>
+					or  <a href="/signup/new"><button type="button" class="btn-light">join us</button></a> if you haven't signed up yet
+				</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>	
-		{% if not current_user %}
-		<div class="card logCard col-12 bg-piggy my-4">
-			<div class="card-body bg-piggy">
-				<h5 class="display-4 card-title my-3">let's start</h5>
-				<p class="card-text">
-					<div class = "mt-1">
-					<a href="/login"><button type="button">sign in</button></a>
-					or  <a href="/signup/new"><button type="button">join us</button></a> if you haven't signed up yet
-					</div>
-				</p>
-			</div>
-		</div>
-		{% endif %}
-			
-	</div>
+	
+	
 {% endblock %}
