@@ -135,4 +135,29 @@ use \Core\View;
 
         return $expenses->fetchAll();
     }
+    /** get logged user last transactions
+     * 
+     * @return mixed expenses rows if found, false otherwise
+     */
+    public static function getLastTransactions($user_id)
+    {
+        if(isset($_POST['transactionsLimit']))	
+            $limitNo = $_POST['transactionsLimit'];
+		else 
+            $limitNo = 5;
+
+        $sql = 'SELECT date, amount, transactionGroup, transactionType, comment 
+                FROM transactions
+                WHERE userId= :userId
+                ORDER BY id DESC LIMIT :limitNo';
+
+        $db = static::getDB();
+        $last_transactions = $db->prepare($sql);
+        $last_transactions->bindValue(':userId', $user_id, PDO::PARAM_INT);
+        $last_transactions->bindValue(':limitNo', $limitNo, PDO::PARAM_INT);
+        $last_transactions->execute();
+
+        return $last_transactions->fetchAll();
+    }
+
  }
