@@ -40,7 +40,7 @@ $.validator.addMethod('validPassword',
   
 	today = yyyy + '/' + mm + '/' + dd;
 	console.log(today);
-	document.getElementById("date").value = today;
+	document.getElementById("datePicker").value = today;
   }
   
   

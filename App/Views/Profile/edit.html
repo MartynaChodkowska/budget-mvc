@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseLogged.html' %}
 
 {% block title %}Profile{% endblock %}
 
@@ -54,7 +54,7 @@
 {% endblock %}
 
 {% block body %}
-
+<div class="col-lg-8 bg-secondary border border-secondary rounded-right my-3 pb-1">
     <h1>Profile</h1>
 	
 	{% if user.errors is not empty %}
@@ -67,17 +67,17 @@
 	{% endif %}
 	
 	<form method="post" id="formProfile" action="/profile/update">
-		<div class="form-group">
+		<div class="form-group col-6 offset-3">
 			<label for="inputName">Name</label>
-			<input id="inputName" name="name" placeholder="name" value="{{ user.name }}" required class="form-control" />		
+			<input type="text" id="inputName" name="name" placeholder="name" value="{{ user.name }}" required class="form-control" />		
 		</div>
 		<br>
-		<div class="form-group">
+		<div class="form-group col-6 offset-3">
 			<label for="inputEmail">Email</label>
 			<input type="email" id="inputEmail" name="email" placeholder="email adress" value="{{ user.email }}" required class="form-control" />		
 		</div>
 		<br>
-		<div class="form-group">
+		<div class="form-group col-6 offset-3">
 			<label for="inputPassword">Password</label>
 			<input type="password" id="inputPassword" name="password" placeholder="password" aria-descirbedby="helpBlock" class="form-control" />
 			<span id="helpBlock" class="help-block">Leave blank to keep current password</span>
@@ -85,8 +85,8 @@
 		
 		<br>
 		<br>
-		<button type="submit" class="btn btn-light">Save</button>
-		<a href="/profile/show">Cancel</a>
+		<button type="submit" class="btn btn-light btn-outline-dark col-8">Save</button>
+		<button type="cancel" class="btn btn-secondary btn-oultline-dark"><a href="/profile/show">Cancel</a></button>
 	</form>
-
+</div>
 {% endblock %}
