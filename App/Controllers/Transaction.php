@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Models\Transactions;
+use \App\Models\TransactionsGroups;
 use \App\Auth;
 use \App\Flash;
 
@@ -48,7 +49,11 @@ use \App\Flash;
        */
          public function addincomeAction()
         {
-            View::renderTemplate('Transaction/addIncome.html');
+            $incomesGroups = TransactionsGroups::getIncomesGroups();
+            
+            View::renderTemplate('Transaction/addIncome.html', [
+                'groups' => $incomesGroups
+            ]);
         }
 
         /**
@@ -58,7 +63,11 @@ use \App\Flash;
          */
         public function addexpenseAction()
         {
-            View::renderTemplate('Transaction/addExpense.html');
+            $expensesGroups = TransactionsGroups::getExpensesGroups();
+
+            View::renderTemplate('Transaction/addExpense.html',[
+                'groups' => $expensesGroups
+            ]);
         }
 
         
@@ -100,8 +109,10 @@ use \App\Flash;
         public function lastTransactions()
         {   
             $last_transactions = Transactions::getLastTransactions($_SESSION['user_id']);
+            $groups = TransactionsGroups::getAllGroups();
                     View::renderTemplate('Transaction/lasttransactions.html', [
-                    'last_transactions'  => $last_transactions
+                    'last_transactions'  => $last_transactions,
+                    'groups'             => $groups
                 ]);
 
         }

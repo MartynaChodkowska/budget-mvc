@@ -1,6 +1,6 @@
 {% extends 'baseLogged.html' %}
 
-{% block title %}Add Income{% endblock %}
+{% block title %}Add Expense{% endblock %}
 {% block footer %}
 <script>
     var today = new Date();
@@ -40,14 +40,13 @@
         <div class="form-group col-6 offset-3">
             <label for="selectMenu">Expense category</label>
             <select id="selectMenu" name="selectMenu" class="form-control">
-                <option value="'house rent'">house rent</option>
-                <option value="media">media</option>
-                <option value="credit">credit</option>
-                <option value="shopping" selected>shopping</option>
-                <option value="entertaiment">entertaiment</option>
-                <option value="kids">kids</option>
-                <option value="cosmetics">cosmetics</option>
-                <option value="other">other</option>
+                {% for group in groups %}
+                {% if "{{ group.name }}" == "shopping" %}    
+                    <option value="{{group.id}}" selected>{{group.name}}</option>
+                {% else %}
+                    <option value="{{group.id}}">{{group.name}}</option>
+                {% endif %}
+            {% endfor %}
             </select> 
         </div>
         <div class="form-group col-6 offset-3">

@@ -10,25 +10,25 @@
             <tr><th>no.</th><th>date</th><th>amount</th><th>group</th><th>type</th><th>comment</th></tr>
         </thead>
         <tbody>
-            
-            {% if last_transactions is empty %}
+
+            {% for transaction in last_transactions %}
+                <tr>
+                    <th>{{ loop.index }}</th>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.amount }} PLN</td>
+                    {% for group in groups %}
+                        {% if group.id == transaction.transactionGroup_id %}
+                            <td>{{ group.name }}</td>
+                            <td>{{ group.type }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ transaction.comment }}</td>
+                </tr>
+            {% else %}
                 <tr>
                     <td colspan="2">there are no transactions</td>
                 </tr>
-            {% else %}
-                {% set no = 0 %}
-                {% for transaction in last_transactions %}
-                {% set no= no+1 %}
-                    <tr>
-                        <th>{{ no }}</th>
-                        <td>{{ transaction.date }}</td>
-                        <td>{{ transaction.amount }} PLN</td>
-                        <td>{{ transaction.transactionGroup }}</td>
-                        <td>{{ transaction.transactionType }}</td>
-                        <td>{{ transaction.comment }}</td>
-                    </tr>
-                {% endfor %}
-            {% endif %}
+            {% endfor %}
 
         </tbody>
     </table>
@@ -43,6 +43,10 @@
                 <input type="submit" style="width:50px" value="OK" class="col-4" >
         </div>
     </form>
+   
 
+
+
+    
 </div>
 {% endblock %}
