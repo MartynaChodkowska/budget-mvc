@@ -65,7 +65,6 @@ class User extends \Core\Model
 		
 			return $stmt->execute();
 		}
-	;
 		return false;
     }
 	
@@ -92,7 +91,7 @@ class User extends \Core\Model
 		// Password	
 		if (isset($this->password)) {
 			
-			if (strlen($this->password < 6)){
+			if (strlen($this->password) < 6){
 				$this->errors[] = 'Please enter at least 6 characters for the password';
 			}
 		

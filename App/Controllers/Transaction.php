@@ -100,7 +100,7 @@ use \App\Flash;
         public function lastTransactions()
         {   
             $last_transactions = Transactions::getLastTransactions($_SESSION['user_id']);
-                    View::renderTemplate('/transaction/lasttransactions.html', [
+                    View::renderTemplate('Transaction/lasttransactions.html', [
                     'last_transactions'  => $last_transactions
                 ]);
 
