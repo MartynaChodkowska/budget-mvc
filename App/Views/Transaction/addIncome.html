@@ -41,11 +41,13 @@
             <div class="form-group col-6 offset-3">
                 <label for="selectMenu">Income category</label>
                 <select id="selectMenu" name="selectMenu" class="form-control">
-                    <option value="salary" selected>salary</option>
-                    <option value="interest">interest</option>
-                    <option value="selling">selling</option>
-                    <option value="bonus">bonus</option>
-                    <option value="other">other</option>
+                    {% for group in groups %}
+                        {% if group.name  == "salary" %}    
+                            <option value="{{group.id}}" selected>{{group.name}}</option>
+                        {% else %}
+                        <option value="{{group.id}}">{{group.name}}</option>
+                        {% endif %}
+                    {% endfor %}
                 </select> 
             </div>
             <div class="form-group col-6 offset-3">
