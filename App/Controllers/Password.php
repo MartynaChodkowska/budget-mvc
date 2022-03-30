@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Flash;
 
   /**
    * Password controller
@@ -28,9 +29,19 @@ use \App\Models\User;
 	   */
 	  public function requestResetAction()
 	  {
-		  User::sendPasswordReset($_POST['email']);
-		  
-		  View::renderTemplate('Password/reset_requested.html');
+		$user = User::findByEmail($_POST['email']);
+		if($user)
+		{
+			User::sendPasswordReset($_POST['email']); 
+			View::renderTemplate('Password/reset_requested.html');
+		}
+		else
+		{
+			Flash::addMessage('There is no account assigned to this email.', Flash::WARNING);
+			View::renderTemplate('Password/forgot.html',[
+				'email' => $_POST['email']
+			]);
+		}
 	  }
 	  
 	   /**

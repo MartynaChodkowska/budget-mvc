@@ -52,8 +52,8 @@ require '../vendor/phpmailer/src/SMTP.php';
 				$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 	
 				//Recipients
-				$mail->setFrom($me, 'PHP Test');
-				$mail->addAddress($to, 'Martyna Cho');     //Add a recipient
+				$mail->setFrom($me, 'Budget account');
+				$mail->addAddress($to);     //Add a recipient
 				//$mail->addAddress('ellen@example.com');               //Name is optional
 				$mail->addReplyTo($me, 'Information');
 				//$mail->addCC('cc@example.com');

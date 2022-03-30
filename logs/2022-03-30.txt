@@ -1,0 +1,4 @@
+[30-Mar-2022 21:34:24 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\xampp\htdocs\budget-mvc\public\index.php(44): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\budget-mvc\Core\Router.php' on line 140
