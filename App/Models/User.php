@@ -54,7 +54,7 @@ class User extends \Core\Model
 			
 			$sql = 'INSERT INTO users (name, email, password_hash, activation_hash) 
 					VALUES (:name, :email, :password_hash, :activation_hash)';
-			
+
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			
@@ -62,7 +62,7 @@ class User extends \Core\Model
 			$stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
 			$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
 			$stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
-		
+			
 			return $stmt->execute();
 		}
 		return false;
@@ -104,6 +104,7 @@ class User extends \Core\Model
 			}
 		}
 	}
+
 	
 	/**
      * See if a user record already exists with the specified email

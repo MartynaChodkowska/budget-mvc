@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use \Core\View;
+use \Models\User;
 
 /**
  * Transactions groups model
@@ -32,14 +33,17 @@ use \Core\View;
      */
     public static function getIncomesGroups()
     {
+       
         $sql = 'SELECT id, name 
                 FROM  transactiongroups
-                WHERE type =:type';
+                WHERE type =:type
+                AND userId = :userId';
         
         $db = static::getDB();
         
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':type', 'Income', PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -55,12 +59,14 @@ use \Core\View;
     {
         $sql = 'SELECT id, name 
                 FROM  transactiongroups
-                WHERE type =:type';
+                WHERE type =:type
+                AND userId = :userId';
         
         $db = static::getDB();
         
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':type', 'Expense', PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -74,10 +80,12 @@ use \Core\View;
      */
     public static function getAllGroups()
     {
-        $sql = 'SELECT * FROM transactiongroups';
+        $sql = 'SELECT * FROM transactiongroups 
+                WHERE userId = :userId';
         
         $db = static::getDB();
-        $stmt = $db->prepare($sql);
+        $stmt = $db->prepare($sql);        
+        $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -96,13 +104,15 @@ use \Core\View;
         
             $sql = 'UPDATE transactiongroups
                     SET name= :name
-                    WHERE id= :id';
+                    WHERE id= :id
+                    AND userId = :userId';
             
             $db = static::getDB();
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':name', $this->newCategory, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->categoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 
             return $stmt->execute();
         }
@@ -133,12 +143,14 @@ use \Core\View;
     public function delete()
     {     
             $sql = 'DELETE FROM transactiongroups
-                    WHERE id= :id';
+                    WHERE id= :id
+                    AND userId = :userId';
             
             $db = static::getDB();
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id', $this->categoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 
             return $stmt->execute();
       
@@ -155,14 +167,15 @@ use \Core\View;
 
         if(empty($this->errors)){
         
-            $sql = 'INSERT INTO transactiongroups (name, type)
-                    VALUES (:name, :type)';
+            $sql = 'INSERT INTO transactiongroups (name, type, userId)
+                    VALUES (:name, :type, :userId)';
             
             $db = static::getDB();
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':name', $this->newCategory, PDO::PARAM_STR);
             $stmt->bindValue(':type', $this->selectType, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 
             return $stmt->execute();
         }
@@ -195,14 +208,15 @@ use \Core\View;
      {
         $sql = 'SELECT * FROM transactiongroups 
                 WHERE name =:group
-                AND type =:type';
+                AND type =:type
+                AND userId = :userId';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
 		$stmt->bindValue(':group', $group, PDO::PARAM_STR);
         $stmt->bindValue(':type', $type, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $_SESSION['user_id'], PDO::PARAM_INT);
 		
-		//zmieniamy na bardziej elastyczną wersję - w razie zmiany ścieżki czy coś..
 		$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 		
 		$stmt->execute();
@@ -210,5 +224,45 @@ use \Core\View;
 		return $stmt->fetch();
 
      }
+     
+	/**
+	 * see if user is activate and add deafult transactions categories
+	 * 
+	 * 
+	 */
+    public static function setGroups($userId)
+    {
+       $incomesCats = ['salary', 'bank interest', 'selling', 'bonus', 'other'];
+       $expensesCats = ['house rent', 'media', 'credit', 'shopping', 'entertaiment', 'kids', 'other'];
+       foreach ($incomesCats as $category)
+       {
+            $sql = 'INSERT INTO transactiongroups (name, type, userId)
+                    VALUES (:name, :type, :userId)';
+            
+            $db = static::getDB();
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':name', $category, PDO::PARAM_STR);
+            $stmt->bindValue(':type', 'Income', PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+            $stmt->execute();
+        }
+
+        foreach ($expensesCats as $category)
+        {
+             $sql = 'INSERT INTO transactiongroups (name, type, userId)
+                     VALUES (:name, :type, :userId)';
+             
+             $db = static::getDB();
+ 
+             $stmt = $db->prepare($sql);
+             $stmt->bindValue(':name', $category, PDO::PARAM_STR);
+             $stmt->bindValue(':type', 'Expense', PDO::PARAM_STR);
+             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+ 
+             $stmt->execute();
+         }
+    }
 
  }

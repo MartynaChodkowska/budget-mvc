@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Models\TransactionsGroups;
 
  /**
   * Signup controller
@@ -35,6 +36,10 @@ use \App\Models\User;
 		   if ($user->save()){ 
 		
 				$user->sendActivationEmail();
+
+				$userForId = User::findByEmail($user->email);
+				TransactionsGroups::setGroups($userForId->id);
+				
 				
 				$this->redirect('/signup/success');
 		
