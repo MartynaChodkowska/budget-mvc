@@ -59,7 +59,9 @@
 			<input type="password" id="inputPassword" name="password" placeholder="Password" class="form-control" />
 		</div>
 		<div class="checkbox">
-			<input type="checkbox" name="remember_me"{% if remember_me %} checked="checked" {% endif %}/> Remember me
+			<label for="rememberme">
+				<input type="checkbox" id="rememberme" name="remember_me"{% if remember_me %} checked="checked" {% endif %}/> Remember me
+			</label>
 		</div>
 		
 		<button type="submit" class="btn btn-light btn-outline-secondary">Log in</button>
