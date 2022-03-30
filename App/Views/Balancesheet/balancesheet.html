@@ -2,6 +2,65 @@
 
 {% block title %}{{ action }} balance sheet{% endblock %}
 
+{% block footer %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"> 
+
+    var my_2d = {{ data2d|json_encode|raw }};
+    var obj = JSON.parse(my_2d);
+
+    var groups = {{ categories|json_encode|raw }};
+    var objgroups = JSON.parse(groups);
+
+	console.log(obj);
+	console.log(objgroups);
+
+    // Draw the pie chart when Charts is loaded.
+    google.charts.load('current', {'packages':['corechart']});
+    // Callback that draws the pie chart
+    google.charts.setOnLoadCallback(draw_my_chart);
+        
+    function draw_my_chart() {
+        // Create the data table .
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'transactionGroup_id');
+        data.addColumn('number', 'totalAmount');
+            
+        //add the JavaScript two dimensional array data into required chart format
+        for(i = 0; i < obj.length; i++)
+        {
+            for(j = 0; j < objgroups.length; j++)
+            {
+                if (objgroups[j].id == obj[i].transactionGroup_id)
+                data.addRow([objgroups[j].name, parseInt(obj[i].totalAmount)]);
+            }
+        }
+
+        var options = {width:600,
+                    height:500,
+                    backgroundColor: 'none',
+                    pieHole: 0.4,
+                    colors:[
+                    '#EE82EE',
+                    '#DAA520',
+                    '#663399',
+                    '#FFFACD',
+					'#DC143C',
+					'#6B8E23',
+					'#BC8F8F',
+					'#708090'
+                    ],
+                };
+
+    // Instantiate and draw the chart
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>
+
+{% endblock %}
+
 {% block body %}
 
     {% if user.errors is not empty %}
@@ -28,7 +87,11 @@
 				{% else %}
 					{% for income in incomes %}
 						<tr>
-							<td>{{ income.transactionGroup }}</td>
+							{% for group in groups %}
+								{% if group.id == income.transactionGroup_id %}
+									<td>{{ group.name }}</td>
+								{% endif %}
+							{% endfor %}
 							<td>{{ income.totalAmount }} PLN</td>
 						</tr>
 					{% endfor %}
@@ -58,7 +121,11 @@
 					{% else %}	
 						{% for expense in expenses %}
 							<tr>
-								<td>{{ expense.transactionGroup }}</td>
+								{% for group in groups %}
+									{% if group.id == expense.transactionGroup_id %}
+										<td>{{ group.name }}</td>
+									{% endif %}
+								{% endfor %}
 								<td>{{ expense.totalAmount }} PLN</td>
 							</tr>
 						{% endfor %}
@@ -128,7 +195,11 @@
 				{% endif %}
 			{% endif %}
 		</div>
-		</br></br>
+		<hr>
+		<div class="piechart">
+			<h3>This is how your spendings look like:</h3>
+			<div id="chart_div" class="mt-0 d-flex justify-content-center"></div>
+		</div>
 	</div>
 	
 {% endblock %}

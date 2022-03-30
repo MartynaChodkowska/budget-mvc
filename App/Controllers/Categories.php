@@ -149,7 +149,10 @@ class Categories extends Authenticated
         }
         else
         {
-          $this->addAction();
+          Flash::addMessage('category already taken!', Flash::WARNING);
+          View::renderTemplate('Categories/add.html',[
+              'name' => $category
+          ]);
         }
 
       }
