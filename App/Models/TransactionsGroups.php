@@ -119,6 +119,10 @@ use \Core\View;
         if($this->newCategory == ''){
             $this->errors[] = 'new category name is required';
         }
+
+        if (static::groupExists($this->newCategory, $this->selectType ?? null)){
+			$this->errors[] = 'category already taken';
+		}
     }
 
     /**
@@ -164,4 +168,47 @@ use \Core\View;
         }
         return false;
     }
+
+    /**
+     * check if category already exists in database
+     * 
+     * @return boolean true is exits, false otherwise
+     */
+    public static function groupExists($group, $type)
+    {
+        $group = static::findGroup($group, $type);
+
+        if ($group) {
+				return true;
+		}
+		return false;
+    }
+
+    /**
+     * looking for a group of transaction for passed name and transaction type
+     * 
+     * @param string $name group name to search for $type type of transaction assigned
+     *
+     * @return mixed Group object if found, false otherwise 
+     */
+     public static function findGroup($group, $type)
+     {
+        $sql = 'SELECT * FROM transactiongroups 
+                WHERE name =:group
+                AND type =:type';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		$stmt->bindValue(':group', $group, PDO::PARAM_STR);
+        $stmt->bindValue(':type', $type, PDO::PARAM_STR);
+		
+		//zmieniamy na bardziej elastyczną wersję - w razie zmiany ścieżki czy coś..
+		$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+		
+		$stmt->execute();
+		
+		return $stmt->fetch();
+
+     }
+
  }

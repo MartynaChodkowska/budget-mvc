@@ -84,20 +84,6 @@ use \App\Flash;
     }
 
     /**
-     * get previous year data and pass it to getTransaction function to get rows from given period
-     * 
-     * @return void
-     */
-    public function previousyearAction()
-    {
-        $start = Date::getFirstDayOfPreviousYear();
-        $end = Date::getLastDayOfPreviousYear();
-
-        $action = "previous year";
-        $this->getTransactions($start, $end, $action);
-    }
-
-    /**
      * show balance sheet panel
      * 
      * @return void
@@ -156,12 +142,23 @@ use \App\Flash;
         $expenses = Transactions::getExpenses($start, $end);
         $totalExpenses = $this->getTotalExpenseAmount($expenses);
 
+        $groups = TransactionsGroups::getAllGroups();
+
+       // $data2d = Transactions::getExpenses('2022-03-01', '2022-03-31');
+        $data2djson = json_encode($expenses);
+
+        $categories = TransactionsGroups::getExpensesGroups();
+        $categoriesjson = json_encode($categories);
+
         View::renderTemplate('Balancesheet/balancesheet.html', [
-            'incomes' => $incomes,
-            'totalIncomes' => $totalIncomes,
-            'expenses' => $expenses,
+            'incomes'       => $incomes,
+            'totalIncomes'  => $totalIncomes,
+            'expenses'      => $expenses,
             'totalExpenses' => $totalExpenses,
-            'action' => $action
+            'action'        => $action,
+            'groups'        => $groups,
+            'data2d'        => $data2djson,
+            'categories'    => $categoriesjson
         ]);
     }
 
@@ -196,7 +193,5 @@ use \App\Flash;
         }
         return $totalExpenseAmount;
     }
-
-
 
  }

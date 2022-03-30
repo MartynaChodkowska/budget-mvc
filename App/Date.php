@@ -36,7 +36,9 @@ namespace App;
 		 */
 		public static function getfirstDayOfPreviousMonth()
 		{
-			$date = date('Y-m-01', strtotime('last month'));
+			$month = date('m');
+			if($month == 3)	$date = date('Y-02-01');
+			else $date = date('Y-m-01', strtotime('previous month'));
 			return $date;
 		}
 
@@ -47,7 +49,10 @@ namespace App;
 		 */
 		public static function getLastDayOfPreviousMonth()
 		{
-			$date = date('Y-m-t', strtotime('last month'));
+			$month = date('m');
+			if($month == 3)	$date = date('Y-02-t');
+			
+			else $date = date('Y-m-t', strtotime('previous month'));
 			return $date;
 		}
 
