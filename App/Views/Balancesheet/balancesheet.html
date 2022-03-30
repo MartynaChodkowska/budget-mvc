@@ -13,9 +13,6 @@
     var groups = {{ categories|json_encode|raw }};
     var objgroups = JSON.parse(groups);
 
-	console.log(obj);
-	console.log(objgroups);
-
     // Draw the pie chart when Charts is loaded.
     google.charts.load('current', {'packages':['corechart']});
     // Callback that draws the pie chart
